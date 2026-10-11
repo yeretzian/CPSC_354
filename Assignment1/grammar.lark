@@ -1,0 +1,30 @@
+// Grammar for our calculator.
+// exp is the loosest level and exp4 is the tightest level.
+// The ? means Lark skips the node if it only has one child.
+// The -> name gives each rule a label that we use in calculator_cfg.py
+
+// plus and minus
+?exp: exp "+" exp1          -> plus
+    | exp "-" exp1          -> minus
+    | exp1
+
+// times
+?exp1: exp1 "*" exp2        -> times
+     | exp2
+
+// negative and log
+?exp2: "-" exp2                    -> neg
+     | "log" exp "base" exp2       -> log
+     | exp3
+
+// power
+?exp3: exp4 "^" exp2        -> pow
+     | exp4
+
+// numbers and parentheses
+?exp4: NUMBER               -> num
+     | "(" exp ")"
+
+%import common.NUMBER
+%import common.WS
+%ignore WS

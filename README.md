@@ -21,3 +21,30 @@ pip install lark
 cd Assignment1
 python calculator_cfg.py "1+2*3"
 ```
+## Assignment 2: Lamba Calculus Interpreter
+
+The `Assignment2` folder has an interpreter for the lambda calculus written in Python. It started as a copy of [lambdaC-2024](https://codeberg.org/alexhkurz/lambdaC-2024). In this assignment, I modified it so it reduces every expression all the way to normal form.
+
+- `grammar.lark` is the grammar for lambda calculus (unchanged from the starter)
+- `interpreter.py` is the interpreter code (I changed the `evaluate` function)
+
+The given version of `evaluate` got stuck in two places:
+
+1. It never reduced inside a lambda, so `\x.(\y.y) x` stayed the same instead of becoming `\x.x`
+2. If the function part of an application wasn't a lambda, it never reduced the argument, so `a ((\x.x) b)` stayed the same instead of becoming `a b`
+
+To fix this I made it so that the `evaluate` function in interpreter.py now also reduces the body of a lambda and the argument of an application. 
+
+I also changed the output so it only prints the result to make grading easier!
+
+To run it:
+
+```
+pip install lark
+cd Assignment2
+python interpreter.py "((\m.\n.m n)(\f.\x.f(f x)))(\f.\x.f(f(f x)))"
+```
+
+This example computes 3 to the power of 2 using Church numerals, so it prints the Church numeral for 9! (This is a sample test, similar to those outlined in the Assignment 2 page details)
+
+
